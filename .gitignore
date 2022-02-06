@@ -2,5 +2,9 @@
 .vscode
 .venv
 config.env
+
 # Python
 Pipfile.lock
+
+# AWS
+*.zip

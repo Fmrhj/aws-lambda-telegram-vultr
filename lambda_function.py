@@ -12,7 +12,7 @@ ACCOUNT_KEY = 'account'
 PENDING_CHARGES_KEY = 'pending_charges'
 EMAIL_KEY = 'email'
 
-# Env. variables
+# Environmental variables
 VULTR_API_KEY = os.environ.get('VULTR_API_KEY', '')
 END_POINT = os.environ.get('END_POINT', '')
 TELEGRAM_API_KEY = os.environ.get('TELEGRAM_API_KEY', '')
