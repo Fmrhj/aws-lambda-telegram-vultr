@@ -1,0 +1,6 @@
+# Local env
+.vscode
+.venv
+config.env
+# Python
+Pipfile.lock
