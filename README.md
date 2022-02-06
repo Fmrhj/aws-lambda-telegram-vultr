@@ -16,7 +16,7 @@ make test_endpoint
 
 ## Configuration/ Environmental Variables
 
-```bash
+```text
 VULTR_API_KEY=<vutlr_api_key>
 END_POINT=<vultr_endpoint>
 TELEGRAM_API_KEY=<key>
