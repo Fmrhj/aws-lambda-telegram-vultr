@@ -82,14 +82,19 @@ def lambda_handler(event, context):
     """
 
     request_body = json.loads(event['body'])
+
     chat_id = request_body['message']['chat']['id']
 
-    # Arguments are allowed
+    if 'text' not in request_body['message']:
+        if 'sticker' in request_body['message']:
+            send_message("😂 Lol, this is a sticker. Try again", chat_id)
+        else:
+            send_message("❌ This is not a text command. Try again ", chat_id)
+        return json.dumps({'status_code': 200})
+
     command_arguments = request_body['message']['text'].split()
     command = command_arguments[0]
     arguments = command_arguments[1:]
-    if len(arguments) == 0:
-        arguments = "No arguments"
 
     if command == "/costs":
         try:
@@ -99,14 +104,12 @@ def lambda_handler(event, context):
             send_message(message, chat_id)
         except:
             send_message("🐛 Could not get latest charges...", chat_id)
+
     elif command == "/help":
         help_message = "💁🏾\n `/costs`: Gets costs from Vultr"
         send_message(help_message, chat_id)
+
     else:
         send_message("❌ Command is not supported ", chat_id)
 
-    return json.dumps({
-        'status_code': 200,
-        'headers': {
-            'Content-Type': 'application/json'}
-        })
+    return json.dumps({'status_code': 200})
