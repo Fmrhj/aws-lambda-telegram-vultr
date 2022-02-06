@@ -95,10 +95,13 @@ def lambda_handler(event, context):
         try:
             account_details = get_account_details()
             charges = get_charges(account_details)
-            message = f"*Vultr* ☁ charges:\n️⏱ {charges['time']}\n💰 {charges['charges']} {charges['currency']}\n {arguments}."
+            message = f"*Vultr* ☁ charges:\n️⏱ {charges['time']}\n💰 {charges['charges']} {charges['currency']}"
             send_message(message, chat_id)
         except:
             send_message("🐛 Could not get latest charges...", chat_id)
+    elif command == "/help":
+        help_message = "💁🏾\n `/costs`: Gets costs from Vultr"
+        send_message(help_message, chat_id)
     else:
         send_message("❌ Command is not supported ", chat_id)
 
