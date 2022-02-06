@@ -32,20 +32,20 @@ def get_account_details() -> Dict:
     headers = CaseInsensitiveDict()
     headers["Accept"] = "application/json"
     headers["Authorization"] = r"Bearer " + VULTR_API_KEY
-    resp = requests.get(END_POINT, headers=headers)
-    return resp.json()
+    response = requests.get(END_POINT, headers=headers)
+    return response.json()
 
 def get_charges(account_details: Dict) -> Dict:
-    """[summary]
+    """Builds a response with account details Dict from Vultr
 
     Args:
-        account_details (Dict): [description]
+        account_details (Dict): details from Vultr API
 
     Raises:
-        KeyError: [description]
+        KeyError: if a certain field can not be found
 
     Returns:
-        Dict: [description]
+        Dict: charges, date and user
     """
     charges = CaseInsensitiveDict()
     now_ts = datetime.datetime.now()
