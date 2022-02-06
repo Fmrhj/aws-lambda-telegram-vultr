@@ -30,3 +30,17 @@ make set_webohook
 # or
 bash run_set_webhook.sh
 ```
+
+## Deploy to AWS
+
+Dependencies:
+
+- AWS account
+- [AWS CLI](https://aws.amazon.com/de/cli/)
+- Create a custom role to deploy directly to AWS Lambda
+
+```bash
+make deploy
+```
+
+> Note: HTTP deployment option is cheaper and sufficient for this use case.
