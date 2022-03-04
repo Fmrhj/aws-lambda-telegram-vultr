@@ -24,9 +24,8 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-central-1
-    - name: deploy
-      run: |
-        zip "${{env.HANDLER_NAME}}.zip" "${{env.HANDLER_NAME}}.py"
-	      aws lambda update-function-code --function-name ${{env.FUNCTION_NAME}} \
-	        	  --zip-file "fileb://${{env.HANDLER_NAME}}.zip"
-
+      - name: deploy
+        run: |
+	     zip "${{env.HANDLER_NAME}}.zip" "${{env.HANDLER_NAME}}.py" 
+ 	     aws lambda update-function-code --function-name ${{env.FUNCTION_NAME}} --zip-file "fileb://${{env.HANDLER_NAME}}.zip"
+      	shell: run
