@@ -13,11 +13,11 @@ jobs:
     runs-on: ubuntu-latest
     name: build and deploy lambda
     steps:
-    # Use versioned actions
+      # Use versioned actions
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
-          python-version: '3.9'
+          python-version: "3.9"
       - uses: aws-actions/setup-sam@v1
       - uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -26,6 +26,7 @@ jobs:
           aws-region: eu-central-1
       - name: deploy
         run: |
-	     zip "${{env.HANDLER_NAME}}.zip" "${{env.HANDLER_NAME}}.py" 
- 	     aws lambda update-function-code --function-name ${{env.FUNCTION_NAME}} --zip-file "fileb://${{env.HANDLER_NAME}}.zip"
-      	shell: run
+          zip "${{env.HANDLER_NAME}}.zip" "${{env.HANDLER_NAME}}.py"
+          aws lambda update-function-code --function-name ${{env.FUNCTION_NAME}} \
+          --zip-file "fileb://${{env.HANDLER_NAME}}.zip"
+        shell: run
