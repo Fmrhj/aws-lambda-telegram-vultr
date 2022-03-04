@@ -25,7 +25,7 @@ jobs:
           aws-region: eu-central-1
       - name: Zip files and update function
         run: |
-          zip "${{HANDLER_NAME}}.zip" "${{HANDLER_NAME}}.py"
+          zip "${{env.HANDLER_NAME}}.zip" "${{env.HANDLER_NAME}}.py"
           aws lambda update-function-code --function-name "${{env.FUNCTION_NAME}}" \
           --zip-file "fileb://${{env.HANDLER_NAME}}.zip"
         shell: run
