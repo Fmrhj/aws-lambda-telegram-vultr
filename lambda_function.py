@@ -73,6 +73,11 @@ def send_message(text: str, chat_id: int) -> None:
     requests.get(url)
 
 
+def create_summary_message(charges: Dict) -> str:
+    """Generates a summary message string"""
+    return f'*Vultr* ☁ summary:\n️⏱ {charges["time"]}\n💰 {charges["charges"]} {charges["currency"]}\n🔋 {charges["balance"]}'
+
+
 def lambda_handler(event, context):
     """Wrapper lambda
 
@@ -103,7 +108,7 @@ def lambda_handler(event, context):
         try:
             account_details = get_account_details()
             charges = get_charges(account_details)
-            message = f'*Vultr* ☁ summary:\n️⏱ {charges["time"]}\n💰 {charges["charges"]} {charges["currency"]}\n🔋 {charges["balance"]}'
+            message = create_summary_message(charges)
             send_message(message, chat_id)
         except:
             send_message('🐛 Could not get latest charges...', chat_id)
