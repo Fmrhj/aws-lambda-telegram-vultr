@@ -4,7 +4,7 @@ install:
 	pipenv install
 
 deploy:
-	zip $(HANDLER_NAME).zip $(HANDLER_NAME).py
+	zip $(HANDLER_NAME).zip $(HANDLER_NAME).py constants.py
 	aws lambda update-function-code --function-name $(FUNCTION_NAME) \
 		--zip-file fileb://$(HANDLER_NAME).zip
 

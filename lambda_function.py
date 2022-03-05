@@ -6,11 +6,7 @@ from typing import Dict
 import requests
 from requests.structures import CaseInsensitiveDict
 
-# Constants
-TELEGRAM_API_HOST = 'api.telegram.org'
-ACCOUNT_KEY = 'account'
-PENDING_CHARGES_KEY = 'pending_charges'
-EMAIL_KEY = 'email'
+import constants
 
 # Environmental variables
 VULTR_API_KEY = os.environ.get('VULTR_API_KEY', '')
@@ -19,9 +15,10 @@ TELEGRAM_API_KEY = os.environ.get('TELEGRAM_API_KEY', '')
 
 for var in (TELEGRAM_API_KEY, END_POINT, VULTR_API_KEY):
     if len(var) == 0:
-           raise ValueError('Environmental variables were not found')
+        raise ValueError('Environmental variables were not found')
 
-TELEGRAM_URL = f'https://{TELEGRAM_API_HOST}/bot{TELEGRAM_API_KEY}'
+TELEGRAM_URL = f'https://{constants.TELEGRAM_API_HOST}/bot{TELEGRAM_API_KEY}'
+
 
 def get_account_details() -> Dict:
     """Gets information from VULTR API
@@ -34,6 +31,7 @@ def get_account_details() -> Dict:
     headers['Authorization'] = r'Bearer ' + VULTR_API_KEY
     response = requests.get(END_POINT, headers=headers)
     return response.json()
+
 
 def get_charges(account_details: Dict) -> Dict:
     """Builds a response with account details Dict from Vultr
@@ -50,15 +48,19 @@ def get_charges(account_details: Dict) -> Dict:
     charges = CaseInsensitiveDict()
     now_ts = datetime.datetime.now()
     try:
-        details = account_details[ACCOUNT_KEY]
-        charges = {'user': details[EMAIL_KEY],
-                    'time': str(now_ts.strftime('%Y-%m-%d %H:%M:%S')),
-                    'charges': details[PENDING_CHARGES_KEY],
-                    'currency': 'EUR'}
+        details = account_details[constants.ACCOUNT_KEY]
+        charges = {
+            'user': details[constants.EMAIL_KEY],
+            'time': str(now_ts.strftime('%Y-%m-%d %H:%M:%S')),
+            'charges': details[constants.PENDING_CHARGES_KEY],
+            'balance': details[constants.BALANCE_KEY],
+            'currency': 'EUR'
+        }
     except:
         raise KeyError('Data could not be fetched from Vultr Costs API')
 
     return charges
+
 
 def send_message(text: str, chat_id: int) -> None:
     """Main function to send messages to Telegram
@@ -69,6 +71,7 @@ def send_message(text: str, chat_id: int) -> None:
     """
     url = f'{TELEGRAM_URL}/sendMessage?text={text}&chat_id={chat_id}&parse_mode=Markdown'
     requests.get(url)
+
 
 def lambda_handler(event, context):
     """Wrapper lambda
@@ -100,7 +103,7 @@ def lambda_handler(event, context):
         try:
             account_details = get_account_details()
             charges = get_charges(account_details)
-            message = f'*Vultr* ☁ charges:\n️⏱ {charges["time"]}\n💰 {charges["charges"]} {charges["currency"]}'
+            message = f'*Vultr* ☁ summary:\n️⏱ {charges["time"]}\n💰 {charges["charges"]} {charges["currency"]}\n🔋 {charges["balance"]}'
             send_message(message, chat_id)
         except:
             send_message('🐛 Could not get latest charges...', chat_id)
