@@ -1,5 +1,5 @@
 # AWS Lambda for Vultr costs
-[![Deploy to AWS Lambda](https://github.com/Fmrhj/aws-lambda-telegram-vultr/actions/workflows/ci.yaml/badge.svg)](https://github.com/Fmrhj/aws-lambda-telegram-vultr/actions/workflows/ci.yaml)
+[![AWS Deployment](https://github.com/Fmrhj/aws-lambda-telegram-vultr/actions/workflows/ci.yaml/badge.svg)](https://github.com/Fmrhj/aws-lambda-telegram-vultr/actions/workflows/ci.yaml)
 ## Usage
 
 ```bash
